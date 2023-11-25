@@ -34,8 +34,12 @@ export class AdminService implements OnModuleInit {
       this.logger.error('error seeding admin collection', e);
     }
   }
-  create(createAdminDto: AdminDto): Promise<AdminDocument> {
-    return this.adminModel.create(createAdminDto);
+  async create(
+    createAdminDto: AdminDto,
+    session: ClientSession | null = null,
+  ): Promise<AdminDocument> {
+    const [admin] = await this.adminModel.create([createAdminDto], { session });
+    return admin;
   }
 
   findById(

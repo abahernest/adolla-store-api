@@ -16,10 +16,14 @@ export class AdminActivityService {
   async create(
     createAdminActivityDto: CreateAdminActivityDto,
     session: ClientSession | null = null,
-  ): Promise<HydratedDocument<AdminActivity, object, object>[]> {
-    return this.adminActivityModel.create([createAdminActivityDto], {
-      session,
-    });
+  ): Promise<HydratedDocument<AdminActivity, object, object>> {
+    const [activity] = await this.adminActivityModel.create(
+      [createAdminActivityDto],
+      {
+        session,
+      },
+    );
+    return activity;
   }
 
   async countAdminActivities(adminId: string): Promise<number> {

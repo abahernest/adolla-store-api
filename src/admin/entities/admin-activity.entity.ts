@@ -7,12 +7,16 @@ export enum AdminActivityType {
   ADD_PRODUCT = 'ADD_PRODUCT',
   EDIT_PRODUCT = 'EDIT_PRODUCT',
   DELETE_PRODUCT = 'DELETE_PRODUCT',
+  ADD_CATEGORY = 'ADD_CATEGORY',
 }
 
 export class ActivityExtraDetails {
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Product' })
   @IsOptional()
   product_id?: mongoose.ObjectId;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'ProductCategory' })
+  @IsOptional()
+  category_id?: mongoose.ObjectId;
   @Prop({ type: mongoose.Schema.Types.ObjectId })
   @IsOptional()
   admin_id?: mongoose.ObjectId;

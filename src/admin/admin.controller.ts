@@ -40,15 +40,26 @@ export class AdminController {
 
       // operation to be performed
       async function _create() {
-        await this.adminService.create(createAdminDto);
+        const admin = await this.adminService.create(createAdminDto, session);
+        if (!admin) {
+          throw new Error(`400:-Bad Request:-could not create admin user`);
+        }
 
         // activity trail
-        await this.activityService.create({
-          type: AdminActivityType.ADD_ADMIN,
-          comment: `Created admin user with email: ${createAdminDto.email}.`,
-          admin_id: req.user.id,
-          extra_details: { more: createAdminDto },
-        });
+        const activity = await this.activityService.create(
+          {
+            type: AdminActivityType.ADD_ADMIN,
+            comment: `Created admin user with email: ${createAdminDto.email}.`,
+            admin_id: req.user.id,
+            extra_details: { more: createAdminDto },
+          },
+          session,
+        );
+        if (!activity) {
+          throw new Error(
+            `500:-Internal Server Error:-could not record ${AdminActivityType.ADD_ADMIN} activity for admin ${req.user.id}`,
+          );
+        }
       }
 
       // bind db transaction operation

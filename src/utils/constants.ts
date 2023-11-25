@@ -12,3 +12,10 @@ export const DefaultSuperUserInfo: AdminDto = {
   role: AdminRoleTypes.SUPER_ADMIN,
   status: AdminAccountStatus.ACTIVE,
 };
+
+export enum Currency {
+  NGN = 'NGN',
+  GBP = 'GBP',
+  YEN = 'YEN',
+  USD = 'USD',
+}
