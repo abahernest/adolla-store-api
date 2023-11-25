@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  gateway_server:
+    image: "abahernest/adolla-store-gateway_server:1.0"
+#    build: .
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "60061:60061"
+    command: ["dist/main.js"]
+
