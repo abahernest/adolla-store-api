@@ -1,4 +1,5 @@
 import {
+  IsMongoId,
   IsNotEmpty,
   IsNotEmptyObject,
   IsNumber,
@@ -9,13 +10,14 @@ import {
 } from 'class-validator';
 import { Price } from '../entities/product.entity';
 import { Type } from 'class-transformer';
-import { ProductIdExists } from '../validators/product-id-exists';
 import { CategoryIdExists } from '../validators/category-id-exists';
 import { Currency } from '../../utils/constants';
+import { ProductIdExists } from '../validators/product-id-exists';
 
 export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
+  @IsMongoId()
   @CategoryIdExists()
   category_id: string;
   @IsString()

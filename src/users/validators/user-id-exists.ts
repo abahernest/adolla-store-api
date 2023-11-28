@@ -5,8 +5,10 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { UsersService } from '../users.service';
+import { Injectable } from '@nestjs/common';
 
 @ValidatorConstraint({ async: true })
+@Injectable()
 export class UserIdExistsConstraint implements ValidatorConstraintInterface {
   constructor(private readonly usersService: UsersService) {}
 

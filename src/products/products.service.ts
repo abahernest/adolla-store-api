@@ -6,21 +6,21 @@ import {
   SortIndex,
   UpdateProductDto,
 } from './dto/create-product.dto';
-import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 import {
   Product,
   ProductDocument,
   ProductStatus,
 } from './entities/product.entity';
-import { ClientSession, Connection, Model, PipelineStage } from 'mongoose';
+import { ClientSession, Model, PipelineStage } from 'mongoose';
 import { CurrentTime } from '../utils/date';
 import { ObjectIdFromHex } from '../utils/mongo';
 
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectModel(Product.name) private productModel: Model<Product>,
-    @InjectConnection() private connection: Connection,
+    @InjectModel(Product.name)
+    private productModel: Model<Product>,
   ) {}
   async create(
     createProductDto: CreateProductDto,
@@ -139,7 +139,7 @@ export class ProductsService {
     id: string,
     updateProductDto: UpdateProductDto,
     session: ClientSession | null = null,
-  ) {
+  ): Promise<ProductDocument> {
     return this.productModel.findByIdAndUpdate(id, updateProductDto, {
       session,
       new: true,
@@ -147,6 +147,6 @@ export class ProductsService {
   }
 
   async findById(productId: string): Promise<ProductDocument> {
-    return this.productModel.findOne({ _id: ObjectIdFromHex(productId) });
+    return this.productModel.findById(productId);
   }
 }

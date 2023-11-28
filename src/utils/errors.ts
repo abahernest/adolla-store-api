@@ -8,6 +8,8 @@ export class ErrorLogger extends Logger {
 
     // if error isn't custom
     if (!message) {
+      statusCode = '500';
+      errorType = 'Internal Server Error';
       message = err.message;
     }
 

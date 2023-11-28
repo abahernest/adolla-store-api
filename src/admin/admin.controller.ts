@@ -66,6 +66,7 @@ export class AdminController {
       const boundedTxFunction = _create.bind(this);
       // pass bounded method to mongo Tr
       await session.withTransaction(boundedTxFunction);
+      await session.endSession();
 
       delete createAdminDto.password;
       return createAdminDto;

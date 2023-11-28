@@ -12,6 +12,7 @@ import {
   ProductCategorySchema,
 } from './entities/category.entity';
 import { UniqueCategoryTitleConstraint } from './validators/unique-category-title';
+import { ProductIdExistsConstraint } from './validators/product-id-exists';
 
 @Module({
   imports: [
@@ -25,13 +26,14 @@ import { UniqueCategoryTitleConstraint } from './validators/unique-category-titl
   controllers: [ProductsController],
   providers: [
     ProductsService,
+    ProductIdExistsConstraint,
     CategoryService,
     CategoryIdExistsConstraint,
     UniqueCategoryTitleConstraint,
   ],
   exports: [
-    MongooseModule,
     ProductsService,
+    ProductIdExistsConstraint,
     CategoryService,
     CategoryIdExistsConstraint,
     UniqueCategoryTitleConstraint,

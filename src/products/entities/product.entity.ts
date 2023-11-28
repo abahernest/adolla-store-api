@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { IsEnum, IsNumber } from 'class-validator';
+import { IsEnum, IsNumber, Min } from 'class-validator';
 import { Currency } from '../../utils/constants';
 
 export enum ProductStatus {
@@ -11,6 +11,7 @@ export enum ProductStatus {
 export class Price {
   @Prop({ default: 0 })
   @IsNumber()
+  @Min(0)
   amount: number;
   @Prop({ type: String, enum: Object.values(Currency), default: Currency.NGN })
   @IsEnum(Currency, { message: 'invalid currency' })

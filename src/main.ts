@@ -15,8 +15,10 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',
-    prefix: 'api/v',
+    prefix: 'v',
   });
+
+  app.setGlobalPrefix('api');
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 

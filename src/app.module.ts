@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import EnvironmentSchema from './environment.schema';
-import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { AdminModule } from './admin/admin.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { ProductsModule } from './products/products.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -18,12 +18,7 @@ import { ProductsModule } from './products/products.module';
       isGlobal: true,
       validationSchema: EnvironmentSchema,
     }),
-    MongooseModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get('MONGODB_URI'),
-      }),
-      inject: [ConfigService],
-    }),
+    DatabaseModule,
     AuthModule,
     UsersModule,
     AdminModule,
@@ -33,8 +28,9 @@ import { ProductsModule } from './products/products.module';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard,
+      useExisting: JwtAuthGuard,
     },
+    JwtAuthGuard,
     AppService,
   ],
 })

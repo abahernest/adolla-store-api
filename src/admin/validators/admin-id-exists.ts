@@ -5,8 +5,10 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { AdminService } from '../admin.service';
+import { Injectable } from '@nestjs/common';
 
 @ValidatorConstraint({ async: true })
+@Injectable()
 export class AdminIdExistsConstraint implements ValidatorConstraintInterface {
   constructor(private readonly adminService: AdminService) {}
 

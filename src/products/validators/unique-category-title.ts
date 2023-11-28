@@ -5,8 +5,10 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { CategoryService } from '../category.service';
+import { Injectable } from '@nestjs/common';
 
 @ValidatorConstraint({ async: true })
+@Injectable()
 export class UniqueCategoryTitleConstraint
   implements ValidatorConstraintInterface
 {

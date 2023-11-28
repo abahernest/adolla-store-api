@@ -4,17 +4,24 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { ProductsService } from '../products.service';
+import { Injectable } from '@nestjs/common';
+import { InjectConnection } from '@nestjs/mongoose';
+import { Connection } from 'mongoose';
+import { ObjectIdFromHex } from '../../utils/mongo';
 
 @ValidatorConstraint({ async: true })
+@Injectable()
 export class ProductIdExistsConstraint implements ValidatorConstraintInterface {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(@InjectConnection() private connection: Connection) {}
 
   validate(id: any) {
     return id
-      ? this.productsService.findById(id).then((product) => {
-          return product != undefined;
-        })
+      ? this.connection
+          .collection('products')
+          .findOne({ _id: ObjectIdFromHex(id) })
+          .then((product) => {
+            return product != undefined;
+          })
       : false;
   }
 

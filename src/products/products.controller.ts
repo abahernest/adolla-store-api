@@ -60,25 +60,28 @@ export class ProductsController {
         }
 
         // activity trail
-        const activity = await this.adminActivityService.create({
-          type: AdminActivityType.ADD_PRODUCT,
-          comment: `Added New product.`,
-          admin_id: req.user.id,
-          extra_details: {
-            product_id: product._id,
-            more: createProductDto,
+        const activity = await this.adminActivityService.create(
+          {
+            type: AdminActivityType.ADD_PRODUCT,
+            comment: `Added New product.`,
+            admin_id: req.user.id,
+            extra_details: {
+              product_id: product._id,
+              more: createProductDto,
+            },
           },
-        });
+          session,
+        );
         if (!activity) {
           throw new Error(
             `500:-Internal Server Error:-could not record ${AdminActivityType.ADD_PRODUCT} activity for admin ${req.user.id}`,
           );
         }
       }
+
       const boundedFunction = _create.bind(this);
       await session.withTransaction(boundedFunction);
       await session.endSession();
-
       return createProductDto;
     } catch (e) {
       this.logger.handleError(
@@ -254,15 +257,18 @@ export class ProductsController {
         }
 
         // activity trail
-        const activity = await this.adminActivityService.create({
-          type: AdminActivityType.ADD_CATEGORY,
-          comment: `Added New Category.`,
-          admin_id: req.user.id,
-          extra_details: {
-            category_id: category._id,
-            more: createCategoryDto,
+        const activity = await this.adminActivityService.create(
+          {
+            type: AdminActivityType.ADD_CATEGORY,
+            comment: `Added New Category.`,
+            admin_id: req.user.id,
+            extra_details: {
+              category_id: category._id,
+              more: createCategoryDto,
+            },
           },
-        });
+          session,
+        );
         if (!activity) {
           throw new Error(
             `500:-Internal Server Error:-could not record ${AdminActivityType.ADD_CATEGORY} activity for admin ${req.user.id}`,
